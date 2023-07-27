@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: root
+    password: dunge0n
+    url: jdbc:mysql://localhost:3306/search_engine_mytest?useSSL=false&allowPublicKeyRetrieval=true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    # show-sql: true
+
+indexing-settings:
+  sites:
+    - url: https://www.lenta.ru
+      name: Лента.ру
+    - url: https://www.playback.ru
+      name: PlayBack.Ru
+    #- url: https://www.skillbox.ru
+     # name: Skillbox
+
