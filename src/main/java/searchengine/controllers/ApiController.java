@@ -4,8 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import searchengine.dto.statistics.SearchDto;
-import searchengine.dto.statistics.responce.IndexingResponse;
 import searchengine.dto.statistics.StatisticsResponse;
+import searchengine.dto.statistics.responce.BadResponse;
+import searchengine.dto.statistics.responce.OkResponse;
 import searchengine.dto.statistics.responce.SearchResponse;
 import searchengine.services.interfaces.IServiceIndexing;
 import searchengine.services.interfaces.IServiceSearch;
@@ -38,43 +39,47 @@ public class ApiController {
     @GetMapping("/startIndexing")
     public ResponseEntity<Object> startIndexing() {
         if(serviceIndexing.indexingAllSites()){
-            return new ResponseEntity<>(new IndexingResponse(true, "Идет инденксация сайтов..."), HttpStatus.OK);
+            return new ResponseEntity<>(new OkResponse(true), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new IndexingResponse(false, "Индексация не запущена!"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new BadResponse(false, "Индексация уже запущена"), HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/stopIndexing")
     public ResponseEntity<Object> stopIndexing() {
         if(serviceIndexing.stopIndexing()){
-            return new ResponseEntity<>(new IndexingResponse(true, "Остановка индексации сайтов!"), HttpStatus.OK);
+            return new ResponseEntity<>(new OkResponse(true), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new IndexingResponse(false, "Индексация не остановлена!"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new BadResponse(false, "Индексация не запущена"), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/indexPage")
     public ResponseEntity<Object> indexingOnePage(@RequestParam(name = "url") String url) {
         if (url.isEmpty()) {
-            return new ResponseEntity<>(new IndexingResponse(false, "URL страницы  не указан!"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new BadResponse(false, "Страница не указана"), HttpStatus.BAD_REQUEST);
         } else {
             if (serviceIndexing.indexingOnePage(url)) {
-                return new ResponseEntity<>(new IndexingResponse(true, ""), HttpStatus.OK);
+                return new ResponseEntity<>(new OkResponse(true), HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(new IndexingResponse(false, "Не верно введен url страницы"), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new BadResponse(false, "Данная страница находится за пределами сайтов,\n" +
+                        "указанных в конфигурационном файле"), HttpStatus.BAD_REQUEST);
             }
         }
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Object> search(@RequestParam(name = "query", required = false, defaultValue = "") String query, @RequestParam(name = "site", required = false, defaultValue = "") String site, @RequestParam(name = "offset", required = false, defaultValue = "0") int offset, @RequestParam(name = "limit", required = false, defaultValue = "20") int limit) {
+    public ResponseEntity<Object> search(@RequestParam(name = "query", required = false, defaultValue = "") String query,
+                                         @RequestParam(name = "site", required = false, defaultValue = "") String site,
+                                         @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
+                                         @RequestParam(name = "limit", required = false, defaultValue = "20") int limit) {
         if (query.isEmpty()) {
-            return new ResponseEntity<>(new IndexingResponse(false, "Задан пустой поисковый запрос"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new BadResponse(false, "Задан пустой поисковый запрос"), HttpStatus.BAD_REQUEST);
         } else {
             List<SearchDto> searchData;
             if (!site.isEmpty()) {
                 if (repositorySite.findByUrl(site) == null) {
-                    return new ResponseEntity<>(new IndexingResponse(false, "Указанная страница не найдена"), HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>(new BadResponse(false, "Указанная страница не найдена"), HttpStatus.BAD_REQUEST);
                 } else {
                     searchData = serviceSearch.searchOneSite(query, site, offset, limit);
                 }

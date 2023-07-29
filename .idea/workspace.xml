@@ -171,13 +171,27 @@
           <option name="timeStamp" value="1" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/searchengine/services/SiteIndexRun.java</url>
-          <line>40</line>
-          <properties class="searchengine.services.SiteIndexRun" method="run">
+          <url>file://$PROJECT_DIR$/src/main/java/searchengine/services/ServiceIndexing.java</url>
+          <line>37</line>
+          <properties class="searchengine.services.ServiceIndexing" method="indexingAllSites">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
-          <option name="timeStamp" value="15" />
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/searchengine/services/ServiceSearch.java</url>
+          <line>65</line>
+          <properties class="searchengine.services.ServiceSearch" method="getLemmaFromSearchText">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/searchengine/services/ServiceSearch.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="37" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

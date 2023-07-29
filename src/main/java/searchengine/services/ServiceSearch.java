@@ -40,23 +40,15 @@ public class ServiceSearch implements IServiceSearch {
         }
         List<SearchDto> searchData = null;
         for (LemmaModel l : foundLemmaList) {
-            if (l.getLemma().equals(searchText)) {
-                searchData = new ArrayList<>(getSearchDtoList(foundLemmaList, textLemmaList, offset, limit));
-                searchData.sort((o1, o2) -> Float.compare(o2.getRelevance(), o1.getRelevance()));
-                if (searchData.size() > limit) {
-                    for (int i = offset; i < limit; i++) {
-                        result.add(searchData.get(i));
+                    searchData = new ArrayList<>(getSearchDtoList(foundLemmaList, textLemmaList, offset, limit));
+                    searchData.sort((o1, o2) -> Float.compare(o2.getRelevance(), o1.getRelevance()));
+                    if (searchData.size() > limit) {
+                        for (int i = offset; i < limit; i++) {
+                            result.add(searchData.get(i));
+                        }
+                        return result;
                     }
-                    return result;
                 }
-            } else {
-                try {
-                    throw new Exception();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
         log.info("Поисковый запрос обработан. Ответ получен.");
         return searchData;
     }

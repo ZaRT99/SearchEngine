@@ -6,6 +6,7 @@ searchengine\services\interfaces\repository\IRepositoryLemma.class
 searchengine\model\Status.class
 searchengine\dto\statistics\StatisticsResponse.class
 searchengine\dto\statistics\TotalStatistics.class
+searchengine\dto\statistics\responce\OkResponse.class
 searchengine\dto\statistics\LemmaDto.class
 searchengine\model\IndexModel.class
 searchengine\config\UserAgent.class
@@ -23,7 +24,7 @@ searchengine\config\SitesList.class
 searchengine\parsers\IndexParser.class
 searchengine\parsers\LemmaParser.class
 searchengine\controllers\ApiController.class
-searchengine\dto\statistics\responce\IndexingResponse.class
+searchengine\dto\statistics\responce\BadResponse.class
 searchengine\services\interfaces\IServiceSearch.class
 searchengine\services\morphology\IMorphology.class
 searchengine\model\PageModel.class

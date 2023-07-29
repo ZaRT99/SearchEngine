@@ -76,7 +76,7 @@ public class SiteIndexRun implements Runnable {
             indexingWords();
 
         } catch (InterruptedException e) {
-            log.error("Индексация остановлена - " + url);
+            errorSite();
         }
     }
 
@@ -99,6 +99,20 @@ public class SiteIndexRun implements Runnable {
             }
         }
         return "";
+    }
+
+    private void errorSite() {
+        List<SiteModel> sites = repositorySite.findAll();
+        for (SiteModel s: sites) {
+            if (s.getStatus() == Status.INDEXING) {
+                s.setLastError("Индексация остановлена");
+                s.setStatus(Status.FAILED);
+                s.setStatusTime(new Date());
+                repositorySite.save(s);
+                String urlStr = s.getUrl();
+                log.info("Индексация остановлена - " + urlStr);
+            }
+        }
     }
 
     private void getLemmas() {

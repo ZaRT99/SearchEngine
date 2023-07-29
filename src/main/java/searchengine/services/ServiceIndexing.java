@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import searchengine.parsers.LemmaParser;
 import searchengine.config.Site;
 import searchengine.config.SitesList;
-import searchengine.dto.statistics.responce.IndexingResponse;
 import searchengine.model.SiteModel;
 import searchengine.parsers.IndexParser;
 import searchengine.services.interfaces.repository.IRepositoryIndex;
@@ -17,6 +16,8 @@ import searchengine.services.interfaces.IServiceIndexing;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static searchengine.model.Status.INDEXED;
 import static searchengine.model.Status.INDEXING;
 
 @Service
@@ -24,7 +25,7 @@ import static searchengine.model.Status.INDEXING;
 @Slf4j
 public class ServiceIndexing implements IServiceIndexing {
     private static final int coreCount = Runtime.getRuntime().availableProcessors();
-    private ExecutorService executorService;
+    private ExecutorService executorService = Executors.newFixedThreadPool(coreCount);;
     private final IRepositorySite repositorySite;
     private final IRepositoryPage repositoryPage;
     private final IRepositoryLemma repositoryLemma;
@@ -32,16 +33,15 @@ public class ServiceIndexing implements IServiceIndexing {
     private final LemmaParser lemmaParser;
     private final IndexParser indexParser;
     private final SitesList sitesList;
-    private boolean check = false;
 
     @Override
     public boolean indexingAllSites() {
         if (indexingRunning()) {
             log.debug("Indexing started");
-            new IndexingResponse(false, "Идет индексация").getErrorMsg();
+            return false;
         } else {
             List<Site> siteList = sitesList.getSites();
-            executorService = Executors.newFixedThreadPool(coreCount);
+            //executorService = Executors.newFixedThreadPool(coreCount);
             for (Site site : siteList) {
                 String url = site.getUrl();
                 SiteModel siteModel = new SiteModel();
@@ -52,41 +52,53 @@ public class ServiceIndexing implements IServiceIndexing {
             }
         }
         executorService.shutdown();
-        return check;
+        return true;
     }
 
     @Override
     public boolean indexingOnePage(String url) {
-        List<Site> urlsList = sitesList.getSites();
-        for (Site s: urlsList){
-            if (s.getUrl().equals(url)){
-                executorService = Executors.newFixedThreadPool(coreCount);
-                executorService.submit(new SiteIndexRun(repositorySite, repositoryPage, repositoryLemma,
-                        repositoryIndex, lemmaParser, indexParser, url, sitesList));
-                executorService.shutdown();
-                check = !check;
-            }
+        if (urlCheck(url)) {
+            log.info("Начата переиндексация сайта - " + url);
+            executorService = Executors.newFixedThreadPool(coreCount);
+            executorService.submit(new SiteIndexRun(repositorySite, repositoryPage, repositoryLemma,
+                    repositoryIndex, lemmaParser, indexParser, url, sitesList));
+            executorService.shutdown();
+            return true;
+        } else {
+            return false;
         }
-        return check;
     }
 
     @Override
     public boolean stopIndexing() {
         if (indexingRunning()){
-            executorService.shutdown();
-            check = !check;
+            log.info("Останавливаем индексацию");
+            executorService.shutdownNow();
+            boolean bool = executorService.isShutdown();
+            return bool;
         }
-        return check;
+        log.info("Индексация не может быть остановлена т.к. не была запущена");
+        return false;
     }
 
     private boolean indexingRunning() {
         repositorySite.flush();
         Iterable<SiteModel> siteList = repositorySite.findAll();
         for (SiteModel site : siteList) {
-            if (site.getStatus() == INDEXING) {
-                check = !check;
+            if (site.getStatus() == INDEXED) {
+                return true;
             }
         }
-        return check;
+        return false;
+    }
+
+    private boolean urlCheck(String url) {
+        List<Site> urlList = sitesList.getSites();
+        for (Site site : urlList) {
+            if (site.getUrl().equals(url)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

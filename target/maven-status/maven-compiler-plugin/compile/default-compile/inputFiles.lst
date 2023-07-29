@@ -1,4 +1,3 @@
-D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\dto\statistics\responce\IndexingResponse.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\dto\statistics\PageDto.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\config\Site.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\config\UserAgent.java
@@ -29,11 +28,13 @@ D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\ja
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\services\morphology\Morphology.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\dto\statistics\IndexDto.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\Application.java
+D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\dto\statistics\responce\BadResponse.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\model\IndexModel.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\model\PageModel.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\services\morphology\IMorphology.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\services\ClearCode.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\services\interfaces\repository\IRepositoryPage.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\services\interfaces\repository\IRepositorySite.java
+D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\dto\statistics\responce\OkResponse.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\services\interfaces\IServiceSearch.java
 D:\KODinG\AllMyProjects\05_IntelligeIDE\LastProject\My_Search_engine\src\main\java\searchengine\controllers\ApiController.java
